@@ -1,0 +1,27 @@
+version: '2.2'
+services:
+  metarl-base:
+    build:
+      cache_from:
+        - rlworkgroup/metarl-headless:latest
+      context: ../
+      dockerfile: docker/Dockerfile.base.18.04
+    image: rlworkgroup/metarl-base
+  metarl-headless-no-files:
+    build:
+      cache_from:
+        - rlworkgroup/metarl-headless:latest
+      context: ../
+      dockerfile: docker/Dockerfile.headless
+      args:
+        - PARENT_IMAGE=rlworkgroup/metarl-base
+    image: rlworkgroup/metarl-headless-no-files
+  metarl-headless:
+    build:
+      cache_from:
+        - rlworkgroup/metarl-headless:latest
+      context: ../
+      dockerfile: docker/Dockerfile.runtime
+      args:
+        - PARENT_IMAGE=rlworkgroup/metarl-headless-no-files
+    image: ${TAG}

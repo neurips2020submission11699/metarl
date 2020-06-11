@@ -1,0 +1,29 @@
+version: '2.2'
+services:
+  metarl-base-nvidia:
+    build:
+      cache_from:
+        - rlworkgroup/metarl-nvidia:latest
+      context: ../
+      dockerfile: docker/Dockerfile.base.18.04
+      args:
+        - PARENT_IMAGE=nvidia/opengl:1.0-glvnd-runtime-ubuntu18.04
+    image: rlworkgroup/metarl-base-nvidia
+  metarl-nvidia-no-files:
+    build:
+      cache_from:
+        - rlworkgroup/metarl-nvidia:latest
+      context: ../
+      dockerfile: docker/Dockerfile.nvidia
+      args:
+        - PARENT_IMAGE=rlworkgroup/metarl-base-nvidia
+    image: rlworkgroup/metarl-nvidia-no-files
+  metarl-nvidia:
+    build:
+      cache_from:
+        - rlworkgroup/metarl-nvidia:latest
+      context: ../
+      dockerfile: docker/Dockerfile.runtime
+      args:
+        - PARENT_IMAGE=rlworkgroup/metarl-nvidia-no-files
+    image: ${TAG}
